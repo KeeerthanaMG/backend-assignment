@@ -1,0 +1,55 @@
+[
+    {
+        "rule_name": "Mark GitHub Notifications as Read",
+        "predicate": "ALL",
+        "conditions": [
+            {
+                "field": "from",
+                "predicate": "equals",
+                "value": "notifications@github.com"
+            }
+        ],
+        "actions": [
+            "mark_as_read"
+        ]
+    },
+    {
+        "rule_name": "Move Important Emails to Work Folder",
+        "predicate": "ANY",
+        "conditions": [
+            {
+                "field": "from",
+                "predicate": "contains",
+                "value": "ceo@"
+            },
+            {
+                "field": "subject",
+                "predicate": "contains",
+                "value": "urgent"
+            }
+        ],
+        "actions": [
+            "move_message"
+        ],
+        "folder": "Work"
+    },
+    {
+        "rule_name": "Delete Old Marketing Emails",
+        "predicate": "ALL",
+        "conditions": [
+            {
+                "field": "subject",
+                "predicate": "contains",
+                "value": "Marketing"
+            },
+            {
+                "field": "received_date",
+                "predicate": "less_than_days",
+                "value": 30
+            }
+        ],
+        "actions": [
+            "delete_email"
+        ]
+    }
+]
