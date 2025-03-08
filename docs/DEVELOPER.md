@@ -44,91 +44,101 @@ cd email-processor
 ```bash
 python -m venv venv
 source venv/bin/activate  # For macOS/Linux
-venv\Scripts\Activate    # For Windows
-```
-
-### 3️⃣ Install Dependencies
-```bash
+venv\Scripts\Activate     # For Windows
+3️⃣ Install Dependencies
+bash
+Copy
+Edit
 pip install -r requirements.txt
-```
-
-## 📌 Running the Project in Development Mode
-```bash
+📌 Running the Project in Development Mode
+bash
+Copy
+Edit
 uvicorn app:app --reload
-```
 ✅ This enables hot-reloading for development.
 
-## 📌 Running Tests
+📌 Running Tests
 This project includes unit tests to ensure stability.
-```bash
-pytest tests/
-```
-✅ Test Coverage Includes:
-- ✔ Database connection (`test_db.py`)
-- ✔ Email fetching (`test_fetch_emails.py`)
-- ✔ Rule processing (`test_rules.py`)
 
-## 📌 Debugging & Logs
+bash
+Copy
+Edit
+pytest tests/
+✅ Test Coverage Includes:
+✔ Database connection (test_db.py)
+✔ Email fetching (test_fetch_emails.py)
+✔ Rule processing (test_rules.py)
+
+📌 Debugging & Logs
 All logs are stored in:
-```bash
+
+bash
+Copy
+Edit
 logs/app.log
-```
 To monitor logs in real-time:
-```bash
+
+bash
+Copy
+Edit
 tail -f logs/app.log
-```
 ✅ Make sure logs are properly written when testing rule processing.
 
-## 📌 Docker Setup (For Development & Deployment)
-
-### 1️⃣ Build and Start Containers
-```bash
+📌 Docker Setup (For Development & Deployment)
+1️⃣ Build and Start Containers
+bash
+Copy
+Edit
 docker-compose up --build
 ```
 This will:
-- Start a **PostgreSQL** database container
-- Start a **FastAPI** app container
 
-### 2️⃣ Access PostgreSQL Inside Docker
-```bash
+Start a PostgreSQL database container
+Start a FastAPI app container
+2️⃣ Access PostgreSQL Inside Docker
+bash
+Copy
+Edit
 docker exec -it postgres_db psql -U email_user -d email_db
-```
-
-### 3️⃣ Stop Containers
-```bash
+3️⃣ Stop Containers
+bash
+Copy
+Edit
 docker-compose down
-```
+📌 Best Practices
+✔ Follow PEP8 coding standards
+✔ Use docstrings for all functions
+✔ Keep modular & reusable code
+✔ Ensure tests pass before pushing code
 
-## 📌 Best Practices
-✔ Follow **PEP8** coding standards  
-✔ Use **docstrings** for all functions  
-✔ Keep **modular & reusable** code  
-✔ Ensure **tests pass** before pushing code  
+✅ Run pytest before pushing any new code!
 
-✅ Run `pytest` before pushing any new code!
-
-## 📌 Handling Environment Variables
+📌 Handling Environment Variables
 Instead of hardcoding credentials, always use environment variables.
 
-### Example `.env` File
-```ini
-DATABASE_URL=postgresql://[role_name]:[db_password_for_the_role]@localhost/email_db
+Example .env File
+ini
+Copy
+Edit
+DATABASE_URL=postgresql://email_user:securepassword@localhost/email_db
 GMAIL_CREDENTIALS_PATH=config/credentials.json
 TOKEN_PATH=config/token.json
-```
+📌 API Documentation
+Once the server is running, test API endpoints using Swagger UI.
 
-## 📌 API Documentation
-Once the server is running, test API endpoints using **Swagger UI**.
 Open:
-```
+
+arduino
+Copy
+Edit
 http://127.0.0.1:8000/docs
-```
+📌 How to Add New Rules
+1️⃣ Open data/rules.json
+2️⃣ Add a new rule:
 
-## 📌 How to Add New Rules
-
-### 1️⃣ Open `data/rules.json`
-### 2️⃣ Add a new rule ( this is just an example, work out according to your requirements ):
-```json
+json
+Copy
+Edit
 {
   "rule_name": "Move CEO Emails",
   "predicate": "ANY",
@@ -139,19 +149,18 @@ http://127.0.0.1:8000/docs
   "actions": ["move_message"],
   "folder": "Work"
 }
-```
-### 3️⃣ Run the rule processor:
-```bash
+3️⃣ Run the rule processor:
+
+bash
+Copy
+Edit
 python -m rules.rule_processor
 ```
 ✅ Make sure the rule is applied correctly!
 
-## 📌 Final Checklist Before Deployment
-✔ Run all tests (`pytest tests/`)
-✔ Ensure FastAPI is working (`uvicorn app:app --reload`)
-✔ Ensure Docker runs properly (`docker-compose up --build`)
-✔ Check logs for errors (`tail -f logs/app.log`)
-
----
-🚀 Happy coding! If you encounter issues, check logs and debugging tips! 🎯
+📌 Final Checklist Before Deployment
+✔ Run all tests (pytest tests/)
+✔ Ensure FastAPI is working (uvicorn app:app --reload)
+✔ Ensure Docker runs properly (docker-compose up --build)
+✔ Check logs for errors (tail -f logs/app.log)
 
