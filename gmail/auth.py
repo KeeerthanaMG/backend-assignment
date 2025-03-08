@@ -11,7 +11,8 @@ from utils.error_handler import handle_error
 # Set up logging
 logger = setup_logger()
 
-SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
+# Scope to include modify access
+SCOPES = ["https://www.googleapis.com/auth/gmail.modify"]
 
 def authenticate_gmail():
     """
@@ -24,24 +25,23 @@ def authenticate_gmail():
         logger.info("Starting Gmail authentication...")
         creds = None
 
-        # Check if token.json exists for saved credentials
+        # 🚨 Delete old token.json to force re-authentication
         if os.path.exists(TOKEN_PATH):
-            logger.info("Loading existing token.json...")
-            creds = Credentials.from_authorized_user_file(TOKEN_PATH, SCOPES)
+            os.remove(TOKEN_PATH)
+            logger.info("Old token.json deleted. Requesting new authentication...")
 
         # If credentials are not valid, request new authentication
-        if not creds or not creds.valid:
-            if not os.path.exists(GMAIL_CREDENTIALS_PATH):
-                raise FileNotFoundError(f"Gmail API credentials not found at {GMAIL_CREDENTIALS_PATH}")
+        if not os.path.exists(GMAIL_CREDENTIALS_PATH):
+            raise FileNotFoundError(f"Gmail API credentials not found at {GMAIL_CREDENTIALS_PATH}")
 
-            logger.info("No valid credentials found. Starting OAuth authentication...")
-            flow = InstalledAppFlow.from_client_secrets_file(GMAIL_CREDENTIALS_PATH, SCOPES)
-            creds = flow.run_local_server(port=0)  # Opens a browser for authentication
+        logger.info("Starting OAuth authentication...")
+        flow = InstalledAppFlow.from_client_secrets_file(GMAIL_CREDENTIALS_PATH, SCOPES)
+        creds = flow.run_local_server(port=0)  # Opens a browser for authentication
 
-            # Save the new token for future use
-            with open(TOKEN_PATH, "w") as token_file:
-                token_file.write(creds.to_json())
-                logger.info(f"New access token saved to {TOKEN_PATH}")
+        # Save the new token for future use
+        with open(TOKEN_PATH, "w") as token_file:
+            token_file.write(creds.to_json())
+            logger.info(f"New access token saved to {TOKEN_PATH}")
 
         logger.info("✅ Gmail authentication successful.")
         return build("gmail", "v1", credentials=creds)

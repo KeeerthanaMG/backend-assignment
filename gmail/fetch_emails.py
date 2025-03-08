@@ -13,15 +13,15 @@ def fetch_and_store_emails():
     Fetches emails from Gmail and stores them in PostgreSQL.
     """
     try:
-        logger.info("Starting email fetching process...")
+        logger.info("📩 Starting email fetching process...")
         service = authenticate_gmail()
         if service is None:
             logger.error("❌ Authentication failed. Cannot fetch emails.")
             print("❌ Authentication failed. Cannot fetch emails.")
             return
 
-        # Fetch the latest 5 emails
-        results = service.users().messages().list(userId="me", maxResults=5).execute()
+        # Fetch the latest 10 emails
+        results = service.users().messages().list(userId="me", maxResults=10).execute()
         messages = results.get("messages", [])
 
         if not messages:
@@ -34,7 +34,7 @@ def fetch_and_store_emails():
         try:
             emails_added = 0
             for msg in messages:
-                msg_id = msg["id"]
+                msg_id = msg["id"]  # ✅ Get Gmail's unique message ID
                 msg_details = service.users().messages().get(userId="me", id=msg_id).execute()
 
                 # Extract email details
@@ -43,19 +43,20 @@ def fetch_and_store_emails():
                 subject = next((h["value"] for h in headers if h["name"] == "Subject"), "No Subject")
                 snippet = msg_details.get("snippet", "")
 
-                # Check if email already exists in the database (to prevent duplicates)
-                existing_email = db.query(Email).filter(
-                    Email.from_email == from_email,
-                    Email.subject == subject
-                ).first()
-
+                # ✅ Check if email already exists in the database using message_id
+                existing_email = db.query(Email).filter(Email.message_id == msg_id).first()
                 if existing_email:
-                    logger.info(f"⚠ Skipping duplicate email from {from_email} with subject '{subject}'")
-                    print(f"⚠ Email from {from_email} with subject '{subject}' already exists. Skipping...")
+                    logger.info(f"⚠ Skipping duplicate email ID: {msg_id} from {from_email} with subject '{subject}'")
+                    print(f"⚠ Email ID: {msg_id} from {from_email} already exists. Skipping...")
                     continue
 
-                # Store email in the database
-                email = Email(from_email=from_email, subject=subject, snippet=snippet)
+                # ✅ Store email in the database with message_id
+                email = Email(
+                    id=msg_id,  # ✅ Store Gmail's actual message ID
+                    from_email=from_email,
+                    subject=subject,
+                    snippet=snippet
+                )
                 db.add(email)
                 emails_added += 1
 

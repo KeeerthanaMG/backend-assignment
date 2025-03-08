@@ -1,6 +1,39 @@
 [
     {
+        "rule_name": "Flag HOD Emails as Important",
+        "priority": 1,
+        "predicate": "ANY",
+        "conditions": [
+            {
+                "field": "from",
+                "predicate": "equals",
+                "value": "hod.cse@rajalakshmi.edu.in"
+            }
+        ],
+        "actions": [
+            "mark_as_unread",
+            "flag_important"
+        ]
+    },
+    {
+        "rule_name": "Move NPTEL Emails to Spam",
+        "priority": 2,
+        "predicate": "ANY",
+        "conditions": [
+            {
+                "field": "from",
+                "predicate": "equals",
+                "value": "onlinecourses@nptel.iitm.ac.in"
+            }
+        ],
+        "actions": [
+            "move_to_folder"
+        ],
+        "folder": "Spam"
+    },
+    {
         "rule_name": "Mark GitHub Notifications as Read",
+        "priority": 3,
         "predicate": "ALL",
         "conditions": [
             {
@@ -15,6 +48,7 @@
     },
     {
         "rule_name": "Move Important Emails to Work Folder",
+        "priority": 4,
         "predicate": "ANY",
         "conditions": [
             {
@@ -35,6 +69,7 @@
     },
     {
         "rule_name": "Delete Old Marketing Emails",
+        "priority": 5,
         "predicate": "ALL",
         "conditions": [
             {
