@@ -57,7 +57,7 @@ def mark_email_as_read(service, email_id):
             id=email_id,
             body={"removeLabelIds": ["UNREAD"]}
         )
-        logger.info(f"✅ Marked email {email_id} as read in Gmail.")
+        logger.info(f"Marked email {email_id} as read in Gmail.")
     except HttpError as e:
         logger.error(handle_error(e, "Mark as Read Error"))
 
@@ -70,7 +70,7 @@ def mark_email_as_unread(service, email_id):
             id=email_id,
             body={"addLabelIds": ["UNREAD"]}
         )
-        logger.info(f"✅ Marked email {email_id} as unread in Gmail.")
+        logger.info(f"Marked email {email_id} as unread in Gmail.")
     except HttpError as e:
         logger.error(handle_error(e, "Mark as Unread Error"))
 
@@ -90,7 +90,7 @@ def move_email_to_folder(service, email_id, folder):
             id=email_id,
             body={"addLabelIds": [folder_id]}
         )
-        logger.info(f"✅ Moved email {email_id} to folder '{folder}' in Gmail.")
+        logger.info(f"Moved email {email_id} to folder '{folder}' in Gmail.")
     except HttpError as e:
         logger.error(handle_error(e, "Move to Folder Error"))
 
@@ -107,7 +107,7 @@ def create_gmail_label(service, label_name):
             userId="me",
             body=new_label
         )
-        logger.info(f"✅ Created new label '{label_name}' in Gmail.")
+        logger.info(f"Created new label '{label_name}' in Gmail.")
         return label["id"]
     except HttpError as e:
         logger.error(handle_error(e, f"Error creating label '{label_name}'"))

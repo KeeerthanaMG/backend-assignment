@@ -13,4 +13,4 @@ TOKEN_PATH = os.getenv("TOKEN_PATH")
 
 # Ensure variables are loaded correctly
 if not DATABASE_URL or not GMAIL_CREDENTIALS_PATH or not TOKEN_PATH:
-    raise ValueError("❌ Missing environment variables. Check your .env file.")
+    raise ValueError(" Missing environment variables. Check your .env file.")

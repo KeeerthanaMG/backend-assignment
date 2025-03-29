@@ -15,9 +15,9 @@ def load_rules():
         with open("data/rules.json", "r") as file:
             rules = json.load(file)
             if not rules:
-                logger.warning("⚠ No rules found in rules.json.")
+                logger.warning("No rules found in rules.json.")
             else:
-                logger.info(f"✅ Loaded {len(rules)} rules from rules.json.")
+                logger.info(f"Loaded {len(rules)} rules from rules.json.")
             return rules
     except (FileNotFoundError, json.JSONDecodeError) as e:
         logger.error(handle_error(e, "Loading rules.json"))

@@ -25,7 +25,7 @@ def authenticate_gmail():
         logger.info("Starting Gmail authentication...")
         creds = None
 
-        # 🚨 Delete old token.json to force re-authentication
+        # Delete old token.json to force re-authentication
         if os.path.exists(TOKEN_PATH):
             os.remove(TOKEN_PATH)
             logger.info("Old token.json deleted. Requesting new authentication...")
@@ -43,11 +43,11 @@ def authenticate_gmail():
             token_file.write(creds.to_json())
             logger.info(f"New access token saved to {TOKEN_PATH}")
 
-        logger.info("✅ Gmail authentication successful.")
+        logger.info("Gmail authentication successful.")
         return build("gmail", "v1", credentials=creds)
 
     except Exception as e:
-        logger.error(f"❌ Gmail Authentication Failed: {str(e)}")
+        logger.error(f"Gmail Authentication Failed: {str(e)}")
         print(handle_error(e, "Gmail Authentication"))
         return None
 
@@ -55,6 +55,6 @@ def authenticate_gmail():
 if __name__ == "__main__":
     service = authenticate_gmail()
     if service:
-        print("✅ Authentication successful!")
+        print("Authentication successful!")
     else:
-        print("❌ Authentication failed!")
+        print("Authentication failed!")

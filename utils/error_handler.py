@@ -14,6 +14,6 @@ def handle_error(exception, context=""):
     Returns:
         str: A formatted error message.
     """
-    error_message = f"❌ Error in {context}: {str(exception)}"
+    error_message = f"Error in {context}: {str(exception)}"
     logger.error(error_message)
     return error_message
